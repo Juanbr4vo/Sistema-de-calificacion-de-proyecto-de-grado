@@ -59,4 +59,22 @@ public class EstudianteControlador {
         }
     }
 
+    @PostMapping(value = "estudiante")
+    public ResponseEntity<Object> create(@RequestBody Estudiante estudiante) {
+        Map<String, Object> map = new HashMap<String, Object>();
+
+        if (estudianteServicio.encontrarPorId(estudiante.getId()) == null) {
+            try {
+                Estudiante result = estudianteServicio.guardar(estudiante);
+                return new ResponseEntity<Object>(result, HttpStatus.OK);
+            } catch (Exception e) {
+                map.put("Mensaje error C: ", e.getMessage()+"Numero de telefono o correo ya se encuentran registrados");
+                return new ResponseEntity<Object>(map, HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        } else {
+            map.put("Mensaje error: ", "Estudiante con cedula: "+estudiante.getId()+" ya se encuentra registrado");
+            return new ResponseEntity<Object>(map, HttpStatus.INTERNAL_SERVER_ERROR);
+        }        
+    }
+
 }
