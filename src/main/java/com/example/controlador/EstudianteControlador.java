@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -98,6 +99,25 @@ public class EstudianteControlador {
         } catch (Exception e) {
             map.put("Mensaje error A: ", e.getMessage());
             return new ResponseEntity<>(map, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @DeleteMapping(value = "estudiante/{id}")
+    public ResponseEntity<Object> eliminar(@PathVariable Long id) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        Estudiante currentEstudiante = estudianteServicio.encontrarPorId(id);
+        if (currentEstudiante != null) {
+            try {
+                estudianteServicio.eliminar(currentEstudiante);
+                map.put("Deleted: ", true);
+                return new ResponseEntity<Object>(map, HttpStatus.OK);
+            } catch (Exception e) {
+                map.put("Mensaje error E: ", e.getMessage());
+                return new ResponseEntity<>(map, HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        } else {
+            map.put("Mensaje error E: ", "El numero de cedula "+id+" no se encuentra en el registro");
+            return new ResponseEntity<Object>(map, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
