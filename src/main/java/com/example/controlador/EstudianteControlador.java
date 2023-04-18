@@ -37,7 +37,7 @@ public class EstudianteControlador {
                 List<Estudiante> list = estudianteServicio.findAll();
                 return new ResponseEntity<Object>(list,HttpStatus.OK);
             } catch (Exception e) {
-                map.put("Mensaje error L: ", e.getMessage());
+                map.put("Mensaje error Listar: ", e.getMessage());
                 return new ResponseEntity<>(map, HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }
@@ -70,11 +70,11 @@ public class EstudianteControlador {
                 Estudiante result = estudianteServicio.guardar(estudiante);
                 return new ResponseEntity<Object>(result, HttpStatus.OK);
             } catch (Exception e) {
-                map.put("Mensaje error C: ", e.getMessage()+"Numero de telefono o correo ya se encuentran registrados");
+                map.put("Mensaje error Crear: ", e.getMessage()+"Numero de telefono o correo ya se encuentran registrados");
                 return new ResponseEntity<>(map, HttpStatus.INTERNAL_SERVER_ERROR);
             }
         } else {
-            map.put("Mensaje error: ", "Estudiante con cedula: "+estudiante.getId()+" ya se encuentra registrado");
+            map.put("Mensaje error: ", "Estudiante con cedula: "+estudiante.getId()+" ya se encuentra en el registro");
             return new ResponseEntity<>(map, HttpStatus.INTERNAL_SERVER_ERROR);
         }        
     }
@@ -97,7 +97,7 @@ public class EstudianteControlador {
             return new ResponseEntity<Object>(result, HttpStatus.OK);
 
         } catch (Exception e) {
-            map.put("Mensaje error A: ", e.getMessage());
+            map.put("Mensaje error Actualizar: ", e.getMessage());
             return new ResponseEntity<>(map, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -112,13 +112,25 @@ public class EstudianteControlador {
                 map.put("Deleted: ", true);
                 return new ResponseEntity<Object>(map, HttpStatus.OK);
             } catch (Exception e) {
-                map.put("Mensaje error E: ", e.getMessage());
+                map.put("Mensaje error Eliminar: ", e.getMessage());
                 return new ResponseEntity<>(map, HttpStatus.INTERNAL_SERVER_ERROR);
             }
         } else {
-            map.put("Mensaje error E: ", "El numero de cedula "+id+" no se encuentra en el registro");
-            return new ResponseEntity<Object>(map, HttpStatus.INTERNAL_SERVER_ERROR);
+            map.put("Mensaje error Eliminar: ", "El numero de cedula "+id+" no se encuentra en el registro");
+            return new ResponseEntity<>(map, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
+    @GetMapping(value = "estudiante/cantidad")
+    public ResponseEntity<Object> contar() {
+        Map<String, Object> map = new HashMap<String, Object>();
+        try {
+            Long cantLong = estudianteServicio.contarRegistro();
+            map.put("Cantidad de registro -> Estudiantes: ", cantLong);
+            return new ResponseEntity<Object>(map, HttpStatus.OK);
+        } catch (Exception e) {
+            map.put("Mensaje error CantReg: ", e.getMessage());
+            return new ResponseEntity<>(map, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
