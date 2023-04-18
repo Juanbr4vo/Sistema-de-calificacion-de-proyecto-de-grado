@@ -41,4 +41,22 @@ public class EstudianteControlador {
         }
     }
 
+    @GetMapping(value = "estudiante/{id}")
+    public ResponseEntity<Object> getById(@PathVariable Long id) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        Estudiante data = estudianteServicio.encontrarPorId(id);
+
+        if (data != null) {
+            try {
+                return new ResponseEntity<Object>(data, HttpStatus.OK);
+            } catch (Exception e) {
+                map.put("Mensaje error BPI", e.getMessage());
+                return new ResponseEntity<Object>(map, HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        } else {
+            map.put("Mensaje error BPI: ", "No se econtrató ningún registro de estudiante con cedula: "+id);
+            return new ResponseEntity<Object>(map, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }
