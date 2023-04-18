@@ -18,8 +18,6 @@ public class Estudiante {
     private long id;
     @Column(nullable = true)
     private String tipo_doc;
-    @Column(nullable = true, unique = true)
-    private String nro_documento;
     @Column(nullable = true)
     private String nombre;
     @Column(nullable = true)
@@ -37,11 +35,10 @@ public class Estudiante {
     }
 
     // Constructor
-    public Estudiante(long id, String tipo_doc, String nro_documento, String nombre, String apelllido, String email,
+    public Estudiante(long id, String tipo_doc, String nombre, String apelllido, String email,
             String telefono, long semestre, long id_carrera) {
         this.id = id;
         this.tipo_doc = tipo_doc;
-        this.nro_documento = nro_documento;
         this.nombre = nombre;
         this.apelllido = apelllido;
         this.email = email;
@@ -65,14 +62,6 @@ public class Estudiante {
 
     public void setTipo_doc(String tipo_doc) {
         this.tipo_doc = tipo_doc;
-    }
-
-    public String getNro_documento() {
-        return nro_documento;
-    }
-
-    public void setNro_documento(String nro_documento) {
-        this.nro_documento = nro_documento;
     }
 
     public String getNombre() {
