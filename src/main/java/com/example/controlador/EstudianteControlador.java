@@ -82,23 +82,28 @@ public class EstudianteControlador {
     @PutMapping(value = "estudiante/{id}")
     public ResponseEntity<Object> actualizar(@RequestBody Estudiante estudiante, @PathVariable Long id) {
         Map<String, Object> map = new HashMap<String, Object>();
-        try {
-            Estudiante currentEstudiante = estudianteServicio.encontrarPorId(id);
-            currentEstudiante.setId(id);
-            currentEstudiante.setTipo_doc(estudiante.getTipo_doc());
-            currentEstudiante.setNombre(estudiante.getNombre());
-            currentEstudiante.setApelllido(estudiante.getApelllido());
-            currentEstudiante.setEmail(estudiante.getEmail());
-            currentEstudiante.setTelefono(estudiante.getTelefono());
-            currentEstudiante.setSemestre(estudiante.getSemestre());
-            currentEstudiante.setId_carrera(estudiante.getId_carrera());
-            Estudiante result = estudianteServicio.guardar(currentEstudiante);
-
-            return new ResponseEntity<Object>(result, HttpStatus.OK);
-
-        } catch (Exception e) {
-            map.put("Mensaje error Actualizar: ", e.getMessage());
-            return new ResponseEntity<>(map, HttpStatus.INTERNAL_SERVER_ERROR);
+        Estudiante currentEstudiante = estudianteServicio.encontrarPorId(id);
+        if (currentEstudiante != null) {
+            try {
+                // currentEstudiante.setId(id);
+                currentEstudiante.setTipo_doc(estudiante.getTipo_doc());
+                currentEstudiante.setNombre(estudiante.getNombre());
+                currentEstudiante.setApelllido(estudiante.getApelllido());
+                currentEstudiante.setEmail(estudiante.getEmail());
+                currentEstudiante.setTelefono(estudiante.getTelefono());
+                currentEstudiante.setSemestre(estudiante.getSemestre());
+                currentEstudiante.setId_carrera(estudiante.getId_carrera());
+                Estudiante result = estudianteServicio.guardar(currentEstudiante);
+    
+                return new ResponseEntity<Object>(result, HttpStatus.OK);
+    
+            } catch (Exception e) {
+                map.put("Mensaje error Actualizar: ", e.getMessage());
+                return new ResponseEntity<>(map, HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        } else {
+            map.put("Mensaje Actualizar: ", "El numero de cedula "+id+" no se encuentra en el registro");
+			return new ResponseEntity<>(map , HttpStatus.OK);
         }
     }
 

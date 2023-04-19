@@ -87,6 +87,7 @@ public class CoordinadorControlador {
 	@PutMapping(value = "coordinador/{id}")
 	public ResponseEntity<Object> actualizar(@RequestBody Coordinador coordinador, @PathVariable Long id){
 		Map<String, Object> map = new HashMap<String, Object>();
+
 		Coordinador currentCoordinador = coordinadorServicio.encontrarPorId(id);
 		if (currentCoordinador!=null) {
 			
@@ -108,7 +109,6 @@ public class CoordinadorControlador {
 			map.put("Mensaje A: ", "No se ha encontrado coordinador con cedula: "+id);
 			return new ResponseEntity<>(map , HttpStatus.OK);
 		}
-			
 	}
 	
 	@DeleteMapping(value = "coordinador/{id}")
