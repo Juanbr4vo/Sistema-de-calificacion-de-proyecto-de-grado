@@ -87,21 +87,27 @@ public class CoordinadorControlador {
 	@PutMapping(value = "coordinador/{id}")
 	public ResponseEntity<Object> actualizar(@RequestBody Coordinador coordinador, @PathVariable Long id){
 		Map<String, Object> map = new HashMap<String, Object>();
-		try {
+
+		Coordinador currentCoordinador = coordinadorServicio.encontrarPorId(id);
+		if (currentCoordinador!=null) {
 			
-			Coordinador currentCoordinador = coordinadorServicio.encontrarPorId(id);
-			currentCoordinador.setId(id);
-			currentCoordinador.setNombre(coordinador.getNombre());
-			currentCoordinador.setApellido(coordinador.getApellido());
-			currentCoordinador.setEmail(coordinador.getEmail());
-			currentCoordinador.setTelefono(coordinador.getTelefono());
-			
-			Coordinador res = coordinadorServicio.guardar(currentCoordinador);
-			
-			return new ResponseEntity<Object>(res,HttpStatus.OK);
-		} catch (Exception e) {
-			map.put("Mensaje de error A: ", e.getMessage());
-			return new ResponseEntity<>(map , HttpStatus.INTERNAL_SERVER_ERROR);
+			try {
+		
+				currentCoordinador.setNombre(coordinador.getNombre());
+				currentCoordinador.setApellido(coordinador.getApellido());
+				currentCoordinador.setEmail(coordinador.getEmail());
+				currentCoordinador.setTelefono(coordinador.getTelefono());
+				
+				Coordinador res = coordinadorServicio.guardar(currentCoordinador);
+				
+				return new ResponseEntity<Object>(res,HttpStatus.OK);
+			} catch (Exception e) {
+				map.put("Mensaje de error A: ", e.getMessage());
+				return new ResponseEntity<>(map , HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+		}else {
+			map.put("Mensaje A: ", "No se ha encontrado coordinador con cedula: "+id);
+			return new ResponseEntity<>(map , HttpStatus.OK);
 		}
 	}
 	
