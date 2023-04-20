@@ -21,7 +21,7 @@ import com.example.servicio.CoordinadorServicio;
 
 
 @RestController
-@RequestMapping("/api/v2/")
+@RequestMapping("/api/v1/")
 public class CoordinadorControlador {
 	
 	@Autowired
