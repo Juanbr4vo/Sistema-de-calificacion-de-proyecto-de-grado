@@ -87,23 +87,28 @@ public class ProfesorControlador {
 	@PutMapping(value = "profesor/{id}")
 	public ResponseEntity<Object> actualizar(@RequestBody Profesor profesor, @PathVariable Long id){
 		Map<String, Object> map = new HashMap<String, Object>();
-		try {
-			
-			Profesor currentProfe = profesorServicio.encontrarPorId(id);
-			currentProfe.setId(id);
-			currentProfe.setNombre(profesor.getNombre());
-			currentProfe.setApellido(profesor.getApellido());
-			currentProfe.setEmail(profesor.getEmail());
-			currentProfe.setTelefono(profesor.getTelefono());
-			currentProfe.setId_carrera(profesor.getId_carrera());
-			
-			Profesor res = profesorServicio.guardar(currentProfe);
-			
-			return new ResponseEntity<Object>(res,HttpStatus.OK);
-		} catch (Exception e) {
-			map.put("Mensaje de error A: ", e.getMessage());
-			return new ResponseEntity<>(map , HttpStatus.INTERNAL_SERVER_ERROR);
+		Profesor currentProfe = profesorServicio.encontrarPorId(id);
+		if (currentProfe!=null) {
+			try {
+				
+				currentProfe.setNombre(profesor.getNombre());
+				currentProfe.setApellido(profesor.getApellido());
+				currentProfe.setEmail(profesor.getEmail());
+				currentProfe.setTelefono(profesor.getTelefono());
+				currentProfe.setId_carrera(profesor.getId_carrera());
+				
+				Profesor res = profesorServicio.guardar(currentProfe);
+				
+				return new ResponseEntity<Object>(res,HttpStatus.OK);
+			} catch (Exception e) {
+				map.put("Mensaje de error A: ", e.getMessage());
+				return new ResponseEntity<>(map , HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+		} else {
+			map.put("Mensaje A: ", "El numero de cedula "+id+" no se encuentra registrado");
+			return new ResponseEntity<>(map , HttpStatus.OK);
 		}
+			
 	}
 	
 	@DeleteMapping(value = "profesor/{id}")

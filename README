@@ -1,0 +1,16 @@
+// Si aún no existe el repositorio
+
+echo "# Sistema de Calificaciones" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git branch -M main
+git remote add origin https://github.com/MrJu4n/Sistema-de-calificacion-de-proyecto-de-grado.git
+git push -u origin main
+
+
+// Si ya existe el repositorio
+
+git remote add origin https://github.com/MrJu4n/Sistema-de-calificacion-de-proyecto-de-grado.git
+git branch -M main
+git push -u origin main
